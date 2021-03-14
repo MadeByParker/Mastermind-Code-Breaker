@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\MasterMind_Game\\MasterMind_Game.csproj": {}
+    "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\Mastermind-Code-Breaker\\MasterMind_Game\\MasterMind_Game.csproj": {}
   },
   "projects": {
-    "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\MasterMind_Game\\MasterMind_Game.csproj": {
+    "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\Mastermind-Code-Breaker\\MasterMind_Game\\MasterMind_Game.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\MasterMind_Game\\MasterMind_Game.csproj",
+        "projectUniqueName": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\Mastermind-Code-Breaker\\MasterMind_Game\\MasterMind_Game.csproj",
         "projectName": "MasterMind_Game",
-        "projectPath": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\MasterMind_Game\\MasterMind_Game.csproj",
+        "projectPath": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\Mastermind-Code-Breaker\\MasterMind_Game\\MasterMind_Game.csproj",
         "packagesPath": "C:\\Users\\Harry Parker\\.nuget\\packages\\",
-        "outputPath": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\MasterMind_Game\\obj\\",
+        "outputPath": "D:\\University Work\\Cyber Security 1st year\\COMP1003\\Coursework\\Mastermind Game\\MasterMind_Game\\Mastermind-Code-Breaker\\MasterMind_Game\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
