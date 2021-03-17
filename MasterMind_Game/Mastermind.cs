@@ -9,6 +9,8 @@ namespace MasterMind_Game
         //output as colours
         string[] outputColours;
 
+        int colours = 8;
+
         //number of guesses that player 2 has to guess the code
         int numofGuesses = 3;
 
@@ -31,6 +33,12 @@ namespace MasterMind_Game
         //the arrays of the inputs
         int[] inputValues;
 
+        //bool array of how many hits
+        bool[] colourHits;
+
+        //array to hold history of guesses
+        string[] history;
+
         //input how many colours are there available and how long the code is
         public void NInput()
         {
@@ -38,31 +46,31 @@ namespace MasterMind_Game
             while (Ninput)
             {
                 //ask for amount of colours available
-                Console.Write("Please enter the number of colours: ");
+                Console.Write("Please enter the number of colours: (Number between 4 and 8) ");
                 string input = Console.ReadLine(); //read user input
                 int inputValue; //integer for the input from parsing the input of string
                 bool success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
-                bool valid = success && 4 <= inputValue && inputValue <= 9;//limits of what the integer can be
+                bool valid = success && 4 <= inputValue && inputValue <= colours;//limits of what the integer can be
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
                 {
                     Console.WriteLine("Invalid Input. Try again...");// asks for another input
-                    Console.Write("Please enter the number of colours: ");
+                    Console.Write("Please enter the number of colours: (Number between 4 and 8) ");
                     input = Console.ReadLine(); // check
                     success = int.TryParse(input, out inputValue);
-                    valid = success && 4 <= inputValue && inputValue <= 9;
+                    valid = success && 4 <= inputValue && inputValue <= colours;
                 }
                 N = inputValue; //set the inputvalue to N
                 Console.WriteLine($"Your input: {N}"); //show value of N
 
                 //ask for length of code 
-                Console.Write("Please enter the number of positions: "); 
+                Console.Write("Please enter the number of positions: (Number between 4 and 8)"); 
                 input = Console.ReadLine(); //read second user input
                 success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
                 valid = success && 4 <= inputValue && inputValue <= 8; //limits of the integer
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
                 {
                     Console.WriteLine("Invalid Input. Try again..."); // asks for another input
-                    Console.Write("Please enter the number of positions: ");
+                    Console.Write("Please enter the number of positions: (Number between 4 and 8)");
                     input = Console.ReadLine();// checks the second input
                     success = int.TryParse(input, out inputValue);
                     valid = success && 4 <= inputValue && inputValue <= 8;
@@ -100,14 +108,14 @@ namespace MasterMind_Game
             inputValues = new int[M];//int array of all the input values size of M
             for (int i = 0; i < M; i++)
             {
-                Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] ");//asks for input at position i, i+1, ...
+                Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and {N}) ");//asks for input at position i, i+1, ...
                 input = Console.ReadLine();//reads input
                 success = int.TryParse(input, out inputValue);//try parsing the input to see if its an integer
                 valid = success && 1 <= inputValue && inputValue <= 8; //define limits to the input
                 while (!valid)//if it is not valid
                 {
                     Console.WriteLine("Invalid Input. Try again...");//ask for another input
-                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}]  ");
+                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and {N})  ");
                     input = Console.ReadLine();//validate the next input until the user gives a valid input
                     success = int.TryParse(input, out inputValue);
                     valid = success && 1 <= inputValue && inputValue <= 8;
@@ -116,53 +124,92 @@ namespace MasterMind_Game
             }
         }
 
+
+
         //process the input
         public void guessInput()
         {
             Console.Clear();
+            black = 0;
+            white = 0;
+            grey = 0;
+            colourHits = new bool[colours];
+            history = new string[M];
             string userCode = string.Empty;//string to hold the user's guess
             string userColours = string.Empty;//string to convert code into colours
+            string userHistory = string.Empty;
             for (int i = 0; i < M; i++)//length of M do this
             {
                 outputColours[i] = Colours[inputValues[i] - 1];//find the colour
                 userColours += outputColours[i].ToString() + ", ";// add colour to string
                 userCode += inputValues[i].ToString();//add each number to string
             }
+            userHistory += userCode + "\n";
+            Console.WriteLine($"History of your guesses: {userHistory}");
             Console.WriteLine($"Your guess: {userCode}");//output both to console
             Console.WriteLine($"Guess Colours: {userColours}\n");
             numofGuesses--;//deduct 1 fom number of guesses
-            for(int i = 0; i < M; i++)//check each digit
+            for (int i = 0; i < colours; i++)//check each digit
             {
-                if(inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
+
+                colourHits[i] = false;
+            }
+
+            for(int i = 0; i < M; i++)
+            { 
+                if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
                 {
-                    Console.WriteLine("Correct Colour and Position");
+                    colourHits[code[i]] = true;
                     black++;
                 }
+            }
 
-                else//else say they got it wrong
+            for(int i = 0; i < M; i++)
+            {
+                for (int j = i + 1; j < M; j++)
                 {
-                    Console.WriteLine("Incorrect colour and position");
-                    white++;
+                    if (inputValues[i] == code[j] && !colourHits[code[j]])
+                    {
+                        white++;
+                    }
                 }
             }
+            grey = M - black - white;
             if (black == M)//if they get it all right they won
             {
+                Console.WriteLine($"\nNumber of Guesses Left: {numofGuesses} \n");
+                Console.WriteLine($"Black: {black} \n");
+                Console.WriteLine($"White: {white} \n");
+                Console.WriteLine($"Grey: {grey} \n");
                 Console.WriteLine("You Won!");
                 gameOver = true;
             }
-            
             if(black != M)//if not try again
             {
                 Console.WriteLine($"\nNumber of Guesses Left: {numofGuesses} \n");
                 Console.WriteLine($"Black: {black} \n");
                 Console.WriteLine($"White: {white} \n");
+                Console.WriteLine($"Grey: {grey} \n");
                 black = 0;
                 white = 0;
+                grey = 0;
                 Console.WriteLine("Oops, this code was incorrect, Try Again!\n");
             }
             if (black != M && numofGuesses == 0)//if they ran out of guesses and still not correct say they lost
             {
                 Console.WriteLine("You Lost!");
+                string RNGcode = string.Empty; // string of the rng code
+                string RNGcolours = string.Empty; // string of the colours, corresponding to the numbers
+                outputColours = new string[M]; //array to output the right colours
+                for (int i = 0; i < M; i++) //for up to length M,
+                {
+                    //generate a number between 1 and N, N+1 being the limit
+                    RNGcode += code[i].ToString();//add each number to a string
+                    outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
+                    RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
+                }
+                Console.WriteLine($"The code was: {RNGcode}");
+                Console.WriteLine($"Colours were: {RNGcolours}");
                 gameOver = true;
             }
         }
