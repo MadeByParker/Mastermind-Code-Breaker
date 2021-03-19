@@ -92,7 +92,7 @@ namespace MasterMind_Game
                     outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
                     RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
                 }
-                Console.WriteLine($"The code is: {RNGcode}");//output the number code
+               
                 Console.WriteLine($"The code is: {RNGcolours}");//output the code as corresponding colours
                 Ninput = false;//end this function
             }
