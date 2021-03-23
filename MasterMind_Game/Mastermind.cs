@@ -8,11 +8,12 @@ namespace MasterMind_Game
         string[] Colours = { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Turquoise" };
         //output as colours
         string[] outputColours;
+        string userHistory = string.Empty; 
 
         int colours = 8;
 
         //number of guesses that player 2 has to guess the code
-        int numofGuesses = 3;
+        int numofGuesses = 0;
 
         int black = 0; //correct colour and position
         int white = 0; //incorrect colour and position
@@ -45,16 +46,33 @@ namespace MasterMind_Game
             //while this is true
             while (Ninput)
             {
+
                 //ask for amount of colours available
-                Console.Write("Please enter the number of colours: (Number between 4 and 8) ");
+                Console.Write("Please enter the number of guesses you want (Number between 1 and 5): ");
                 string input = Console.ReadLine(); //read user input
                 int inputValue; //integer for the input from parsing the input of string
                 bool success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
-                bool valid = success && 4 <= inputValue && inputValue <= colours;//limits of what the integer can be
+                bool valid = success && 1 <= inputValue && inputValue <= 5;//limits of what the integer can be
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
                 {
                     Console.WriteLine("Invalid Input. Try again...");// asks for another input
-                    Console.Write("Please enter the number of colours: (Number between 4 and 8) ");
+                    Console.Write("Please enter the number of guesses you want (Number between 1 and 5): ");
+                    input = Console.ReadLine(); // check
+                    success = int.TryParse(input, out inputValue);
+                    valid = success && 4 <= inputValue && inputValue <= colours;
+                }
+                numofGuesses = inputValue; //set the inputvalue to N
+                Console.WriteLine($"Your input: {numofGuesses}"); //show value of N
+
+                //ask for amount of colours available
+                Console.Write("Please enter the number of colours (Number between 4 and 8): ");
+                input = Console.ReadLine(); //read user input
+                success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
+                valid = success && 4 <= inputValue && inputValue <= colours;//limits of what the integer can be
+                while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
+                {
+                    Console.WriteLine("Invalid Input. Try again...");// asks for another input
+                    Console.Write("Please enter the number of colours (Number between 4 and 8): ");
                     input = Console.ReadLine(); // check
                     success = int.TryParse(input, out inputValue);
                     valid = success && 4 <= inputValue && inputValue <= colours;
@@ -63,14 +81,14 @@ namespace MasterMind_Game
                 Console.WriteLine($"Your input: {N}"); //show value of N
 
                 //ask for length of code 
-                Console.Write("Please enter the number of positions: (Number between 4 and 8)"); 
+                Console.Write("Please enter the number of positions (Number between 4 and 8): "); 
                 input = Console.ReadLine(); //read second user input
                 success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
                 valid = success && 4 <= inputValue && inputValue <= 8; //limits of the integer
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
                 {
                     Console.WriteLine("Invalid Input. Try again..."); // asks for another input
-                    Console.Write("Please enter the number of positions: (Number between 4 and 8)");
+                    Console.Write("Please enter the number of positions (Number between 4 and 8): ");
                     input = Console.ReadLine();// checks the second input
                     success = int.TryParse(input, out inputValue);
                     valid = success && 4 <= inputValue && inputValue <= 8;
@@ -105,6 +123,7 @@ namespace MasterMind_Game
             int inputValue;//int for the input after parsing input
             bool success;//see if the input is can integer
             bool valid;//limits to the input
+            Console.WriteLine("Colour Guide: \n1 = Red\n2 = Blue\n3 = Green\n4 = Yellow\n5 = Orange\n6 = Purple\n7 = Pink\n8 = Turqoise");
             inputValues = new int[M];//int array of all the input values size of M
             for (int i = 0; i < M; i++)
             {
@@ -137,14 +156,13 @@ namespace MasterMind_Game
             history = new string[M];
             string userCode = string.Empty;//string to hold the user's guess
             string userColours = string.Empty;//string to convert code into colours
-            string userHistory = string.Empty;
             for (int i = 0; i < M; i++)//length of M do this
             {
                 outputColours[i] = Colours[inputValues[i] - 1];//find the colour
                 userColours += outputColours[i].ToString() + ", ";// add colour to string
                 userCode += inputValues[i].ToString();//add each number to string
             }
-            userHistory += userCode + "\n";
+            userHistory += userCode + ", ";
             Console.WriteLine($"History of your guesses: {userHistory}");
             Console.WriteLine($"Your guess: {userCode}");//output both to console
             Console.WriteLine($"Guess Colours: {userColours}\n");
@@ -230,7 +248,7 @@ namespace MasterMind_Game
                 grey = 0;
                 white = 0;
                 black = 0;
-                numofGuesses = 3;
+                userHistory = string.Empty;
 
             }
             else if (input == "no")
