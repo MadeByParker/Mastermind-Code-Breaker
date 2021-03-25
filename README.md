@@ -11,6 +11,9 @@ Done it without using .length, Lists, foreach loops, ONLY arrays, for loops and 
 
 ## How to Play: 🎮
 
+To start it go to `Mastermind-Code-Breaker/MasterMind_Game/bin/Debug/netcoreapp3.1/ and open the .exe file`.
+Or in the command line or powershell type `cd the directory you downloaded it to e.g. cd C:/Your User Name/Downloads/Mastermind-Code-Breaker/MasterMind_Game/bin/Debug/netcoreapp3.1/` then type `MasterMind_Game.exe` on command prompt or `./MasterMind_Game.exe` on Poweshell.
+
 1. Type a number between 1 and 5 to deecide the amount of guesses you want to have to guess the code, 1 being 1 life and 5 being easy.
 2. Type a number between 4 and 9 to decide how many colours the computer has to pick from, 4 being easiest to guess, 9 is hardest.
 3. Type another number between 4 and 8 to determine how long do you want the code to be, 4 digits being easiest as it is the shortest and 8 being longest.
