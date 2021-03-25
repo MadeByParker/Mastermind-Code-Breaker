@@ -31,3 +31,34 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 
 ## Screenshots (coming): 🖼
 
+### Starting Up
+
+![Starting Up the Game](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/start.PNG)
+
+### Ready to Play
+
+![Play](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/play.PNG)
+
+### Inputting the rules
+
+![Rules](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/inputs.PNG)
+
+### Guessing the code
+
+![Guessing](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/guesses.PNG)
+
+### Winning 
+
+![Win](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/win.PNG)
+
+### Losing 
+
+![Lost](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/lost.PNG)
+
+### Exiting the Game
+
+![Exit](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/exit.PNG)
+
+
+
+
