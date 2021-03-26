@@ -47,7 +47,7 @@ namespace MasterMind_Game
             while (Ninput)
             {
 
-                //ask for amount of colours available
+                //ask for amount of guesses the user wants to have
                 Console.Write("Please enter the number of guesses you want (Number between 1 and 5): ");
                 string input = Console.ReadLine(); //read user input
                 int inputValue; //integer for the input from parsing the input of string
@@ -66,7 +66,7 @@ namespace MasterMind_Game
 
                 //ask for amount of colours available
                 Console.Write("Please enter the number of colours (Number between 4 and 8): ");
-                input = Console.ReadLine(); //read user input
+                input = Console.ReadLine(); //read second user input
                 success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
                 valid = success && 4 <= inputValue && inputValue <= colours;//limits of what the integer can be
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
@@ -82,7 +82,7 @@ namespace MasterMind_Game
 
                 //ask for length of code 
                 Console.Write("Please enter the number of positions (Number between 4 and 8): "); 
-                input = Console.ReadLine(); //read second user input
+                input = Console.ReadLine(); //read third user input
                 success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
                 valid = success && 4 <= inputValue && inputValue <= 8; //limits of the integer
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
@@ -95,7 +95,7 @@ namespace MasterMind_Game
                 }
                 M = inputValue; // set the inputvalue to M
                 Console.WriteLine($"Your input: {M}"); // show value of M
-                Console.WriteLine($"Inputs: ({N}-{M}): "); // show both inputs
+                Console.WriteLine($"Inputs: ({numofGuesses}-{N}-{M}): "); // show both inputs
 
                 Random rng = new Random(); //new random class
                 code = new int[M]; //make an int array called code, size of M
@@ -110,8 +110,6 @@ namespace MasterMind_Game
                     outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
                     RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
                 }
-               
-                Console.WriteLine($"The code is: {RNGcolours}");//output the code as corresponding colours
                 Ninput = false;//end this function
             }
         }
@@ -127,14 +125,14 @@ namespace MasterMind_Game
             inputValues = new int[M];//int array of all the input values size of M
             for (int i = 0; i < M; i++)
             {
-                Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and {N}) ");//asks for input at position i, i+1, ...
+                Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 8) ");//asks for input at position i, i+1, ...
                 input = Console.ReadLine();//reads input
                 success = int.TryParse(input, out inputValue);//try parsing the input to see if its an integer
                 valid = success && 1 <= inputValue && inputValue <= 8; //define limits to the input
                 while (!valid)//if it is not valid
                 {
                     Console.WriteLine("Invalid Input. Try again...");//ask for another input
-                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and {N})  ");
+                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 8)  ");
                     input = Console.ReadLine();//validate the next input until the user gives a valid input
                     success = int.TryParse(input, out inputValue);
                     valid = success && 1 <= inputValue && inputValue <= 8;
