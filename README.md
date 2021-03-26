@@ -47,6 +47,10 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 
 ![Guessing](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/guesses.PNG)
 
+### Invalid inputs 
+
+![Invalid](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/invalid.PNG)
+
 ### Winning 
 
 ![Win](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/win.PNG)
