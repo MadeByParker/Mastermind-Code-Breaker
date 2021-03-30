@@ -29,7 +29,7 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 * If you got them all right then it'll say `You Won!, Do you want to play again?` then you can type yes to continue or no to exit the game.
 * Else you will keep playing until you got no more guesses left or you guessed the code correctly.
 
-## Screenshots (coming): 🖼
+## Screenshots: 🖼
 
 ### Starting Up
 
