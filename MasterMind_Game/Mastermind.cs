@@ -12,12 +12,12 @@ namespace MasterMind_Game
 
         int colours = 8;
 
-        //number of guesses that player 2 has to guess the code
+        //number of guesses that the player has to guess the code
         int numofGuesses = 0;
 
         int black = 0; //correct colour and position
         int white = 0; //incorrect colour and position
-        int grey = 0; //correct colour but position wrong
+        int grey = 0; //ino
 
         //bool to state if the game is finished or not
         bool gameOver = false;// to see if the user has beat the game
@@ -48,18 +48,18 @@ namespace MasterMind_Game
             {
 
                 //ask for amount of guesses the user wants to have
-                Console.Write("Please enter the number of guesses you want (Number between 1 and 5): ");
+                Console.Write("Please enter the number of guesses you want (Number between 1 and 10): ");
                 string input = Console.ReadLine(); //read user input
                 int inputValue; //integer for the input from parsing the input of string
                 bool success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
-                bool valid = success && 1 <= inputValue && inputValue <= 5;//limits of what the integer can be
+                bool valid = success && 1 <= inputValue && inputValue <= 10;//limits of what the integer can be
                 while (!valid) //if the integer is not in the limits then it will perform this while loop as the bool is false
                 {
                     Console.WriteLine("Invalid Input. Try again...");// asks for another input
-                    Console.Write("Please enter the number of guesses you want (Number between 1 and 5): ");
+                    Console.Write("Please enter the number of guesses you want (Number between 1 and 10): ");
                     input = Console.ReadLine(); // check
                     success = int.TryParse(input, out inputValue);
-                    valid = success && 4 <= inputValue && inputValue <= colours;
+                    valid = success && 1 <= inputValue && inputValue <= 10;
                 }
                 numofGuesses = inputValue; //set the inputvalue to N
                 Console.WriteLine($"Your input: {numofGuesses}"); //show value of N
