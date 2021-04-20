@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 
 namespace MasterMind_Game
 {
     class Mastermind
     {
+
+        public static Queue myQueue = new Queue();
         //colours that are avaliable
         string[] Colours = { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Turquoise" };
         //output as colours
@@ -37,8 +40,6 @@ namespace MasterMind_Game
         //bool array of how many hits
         bool[] colourHits;
 
-        //array to hold history of guesses
-        string[] history;
 
         //input how many colours are there available and how long the code is
         public void NInput()
@@ -146,12 +147,11 @@ namespace MasterMind_Game
         //process the input
         public void guessInput()
         {
-            Console.Clear();
-            black = 0;
+            Console.Clear();//clears the console
+            black = 0;//set black, white and grey variables to 0 before checking input
             white = 0;
             grey = 0;
-            colourHits = new bool[colours];
-            history = new string[M];
+            colourHits = new bool[colours]; //make a new bool array the size of the input to see if the user inputted the correct values
             string userCode = string.Empty;//string to hold the user's guess
             string userColours = string.Empty;//string to convert code into colours
             for (int i = 0; i < M; i++)//length of M do this
@@ -159,6 +159,7 @@ namespace MasterMind_Game
                 outputColours[i] = Colours[inputValues[i] - 1];//find the colour
                 userColours += outputColours[i].ToString() + ", ";// add colour to string
                 userCode += inputValues[i].ToString();//add each number to string
+                myQueue.Enqueue(inputValues[i]);
             }
             userHistory += userCode + ", ";
             Console.WriteLine($"History of your guesses: {userHistory}");
@@ -180,7 +181,7 @@ namespace MasterMind_Game
                 }
             }
 
-            for(int i = 0; i < M; i++)
+            for(int i = 0; i < M; i++)//it'll check the next one across if its not in the current position to increase white, white is for correct input but wrong position
             {
                 for (int j = i + 1; j < M; j++)
                 {
@@ -190,10 +191,10 @@ namespace MasterMind_Game
                     }
                 }
             }
-            grey = M - black - white;
+            grey = M - black - white; //whatever is left from the black and white from the total is the grey, incorrect input and position
             if (black == M)//if they get it all right they won
             {
-                Console.WriteLine($"\nNumber of Guesses Left: {numofGuesses} \n");
+                Console.WriteLine($"Number of Guesses Left: {numofGuesses} \n");
                 Console.WriteLine($"Black: {black} \n");
                 Console.WriteLine($"White: {white} \n");
                 Console.WriteLine($"Grey: {grey} \n");
@@ -252,7 +253,7 @@ namespace MasterMind_Game
             else if (input == "no")
             {
                 Console.WriteLine("Thank you for playing the game!\n");
-                Console.Write("Please press any key to exit the game");
+                Console.Write("Please press any key to exit the game... ");
                 Console.ReadKey(gameStart = false);
             }
             else
