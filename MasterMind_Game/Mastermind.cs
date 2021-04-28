@@ -6,7 +6,6 @@ namespace MasterMind_Game
     class Mastermind
     {
 
-        public static Queue myQueue = new Queue();
         //colours that are avaliable
         string[] Colours = { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Turquoise" };
         //output as colours
@@ -29,7 +28,7 @@ namespace MasterMind_Game
         
         //integer to turn the current input into a integer from a console.readline()
         int N = 0; //amount of options to choose from e.g 4 being easiest to guess whereas 9 has 9 options, so 1/9 to be correct
-        int M = 0; //how long the user wants the code to be, 4 being easy, 8 being hard
+        static int M = 0; //how long the user wants the code to be, 4 being easy, 8 being hard
 
         // this array storex the generated code
         int[] code;
@@ -39,6 +38,26 @@ namespace MasterMind_Game
 
         //bool array of how many hits
         bool[] colourHits;
+
+        class queue
+        {
+            public int first;                      // youngest entry
+            public int[] guesses = new int[M]; // N would be more flexible than 100 ...
+        }
+
+        static void add(queue q, int i)
+        {
+            if (q.first == M - 1)
+            {
+                System.Console.WriteLine("ERROR"); // better error handling?
+            }
+            else
+            {
+                q.first = q.first + 1;
+                q.guesses[q.first] = i;
+            }
+        }
+
 
 
         //input how many colours are there available and how long the code is
@@ -111,6 +130,8 @@ namespace MasterMind_Game
                     outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
                     RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
                 }
+                Console.WriteLine($"The code was: {RNGcode}");
+                Console.WriteLine($"Colours were: {RNGcolours}");
                 Ninput = false;//end this function
             }
         }
@@ -118,6 +139,9 @@ namespace MasterMind_Game
         //takes user guesses at each position
         public void readInput()
         {
+            queue q = new queue();
+            int count;
+            q.first = 0;
             string input;//string for the user input
             int inputValue;//int for the input after parsing input
             bool success;//see if the input is can integer
@@ -133,12 +157,16 @@ namespace MasterMind_Game
                 while (!valid)//if it is not valid
                 {
                     Console.WriteLine("Invalid Input. Try again...");//ask for another input
-                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 8)  ");
+                    Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 8) ");
                     input = Console.ReadLine();//validate the next input until the user gives a valid input
                     success = int.TryParse(input, out inputValue);
                     valid = success && 1 <= inputValue && inputValue <= 8;
                 }
-                inputValues[i] += inputValue;//add each value ot an array
+                inputValues[i] += inputValue;//add each value to an array
+                for(i = 0; i < M; i++)
+                {
+                    add(q, i);
+                }
             }
         }
 
@@ -159,7 +187,6 @@ namespace MasterMind_Game
                 outputColours[i] = Colours[inputValues[i] - 1];//find the colour
                 userColours += outputColours[i].ToString() + ", ";// add colour to string
                 userCode += inputValues[i].ToString();//add each number to string
-                myQueue.Enqueue(inputValues[i]);
             }
             userHistory += userCode + ", ";
             Console.WriteLine($"History of your guesses: {userHistory}");
@@ -183,9 +210,13 @@ namespace MasterMind_Game
 
             for(int i = 0; i < M; i++)//it'll check the next one across if its not in the current position to increase white, white is for correct input but wrong position
             {
-                for (int j = i + 1; j < M; j++)
+                if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
                 {
-                    if (inputValues[i] == code[j] && !colourHits[code[j]])
+                    continue;
+                }
+                for (int j = 0; j < M; j++)
+                {
+                    if (inputValues[i] == code[j])
                     {
                         white++;
                     }
@@ -233,10 +264,10 @@ namespace MasterMind_Game
 
         public void Replay()//replay function
         {
-            Console.WriteLine("Do you want to play again?");
-            string input = Console.ReadLine();
-            input.ToLower();
-            if (input == "yes")
+            Console.WriteLine("Do you want to play again?");//asks if they want to play again
+            string input = Console.ReadLine();//takes input
+            input.ToLower();//convert it to lower case
+            if (input == "yes")//if it is yes then it'll reset the game and clear the console
             {
                 Console.Clear();
                 gameOver = false;
@@ -250,13 +281,13 @@ namespace MasterMind_Game
                 userHistory = string.Empty;
 
             }
-            else if (input == "no")
+            else if (input == "no")//if the answer is no
             {
                 Console.WriteLine("Thank you for playing the game!\n");
-                Console.Write("Please press any key to exit the game... ");
+                Console.Write("Please press any key to exit the game... ");//it will exit the game after a key is pressed
                 Console.ReadKey(gameStart = false);
             }
-            else
+            else//else it is an invalid answer
             {
                 gameStart = false;
                 Console.WriteLine("Invalid answer, Try again...");
@@ -264,27 +295,27 @@ namespace MasterMind_Game
             }
         }
 
-        public void Start()
+        public void Start()//start procedure
         {
-            Console.WriteLine("Type 'play' to start the game");
-            string input = Console.ReadLine();
+            Console.WriteLine("Type 'play' to start the game");//it'l'l ask the user to type 'play' to start the game
+            string input = Console.ReadLine();//converts input to lower case after reading it
             input.ToLower();
-            if (input == "play")
+            if (input == "play")//if the user has typed 'play' then it'll start the game
             {
                 gameStart = true;
             }
-            else
+            else//else it'll say it was an invalid input and recall the function
             {
                 gameStart = false;
                 Console.WriteLine("Invalid answer, Try again...");
                 Start();
             }
         }
-        static void Main(string[] args)
+        static void Main(string[] args)//Main function
         {
-            Mastermind game = new Mastermind();
-            game.Start();
-            while (game.gameStart == true)
+            Mastermind game = new Mastermind();//Create a new Mastermind class
+            game.Start();//calls the start procedure
+            while (game.gameStart == true)//when the game is running
             {
                 Console.WriteLine("Hello and Welcome to my Mastermind Code Breaker!");
 
