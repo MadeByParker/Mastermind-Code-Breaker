@@ -32,33 +32,57 @@ namespace MasterMind_Game
 
         // this array storex the generated code
         int[] code;
+        int[] permcode;
 
         //the arrays of the inputs
         int[] inputValues;
+        int[] permInput;
 
-        //bool array of how many hits
-        bool[] colourHits;
-
-        class queue
+        class Queue<Item>
         {
-            public int first;                      // youngest entry
-            public int[] guesses = new int[M]; // N would be more flexible than 100 ...
-        }
+            private Node Head = null;
+            private Node End = null;
+            public int Size;
 
-        static void add(queue q, int i)
-        {
-            if (q.first == M - 1)
+            public void add(Item itemtoAdd)
             {
-                System.Console.WriteLine("ERROR"); // better error handling?
+                if (isEmpty())
+                {
+                    Head = new Node(itemtoAdd);
+                    End = Head;
+                    Size++;
+                    return;
+                }
+                Node temp = new Node(itemtoAdd);
+                End.Next = temp;
+                End = temp;
+                Size++;
             }
-            else
+
+            public Item takeaway()
             {
-                q.first = q.first + 1;
-                q.guesses[q.first] = i;
+                Item temp = Head.Item;
+                Head = Head.Next;
+                Size--;
+                return temp;
             }
+
+            public bool isEmpty()
+            {
+                return Head == null;
+            }
+
+            private class Node
+            {
+                public Item Item;
+                public Node Next = null;
+                public Node(Item item)
+                {
+                    Item = item;
+                }
+            }
+
         }
-
-
 
         //input how many colours are there available and how long the code is
         public void NInput()
@@ -119,6 +143,7 @@ namespace MasterMind_Game
 
                 Random rng = new Random(); //new random class
                 code = new int[M]; //make an int array called code, size of M
+                permcode = new int[M];
                 string RNGcode = string.Empty; // string of the rng code
                 string RNGcolours = string.Empty; // string of the colours, corresponding to the numbers
                 outputColours = new string[M]; //array to output the right colours
@@ -126,6 +151,7 @@ namespace MasterMind_Game
                 {
                     //generate a number between 1 and N, N+1 being the limit
                     code[i] += rng.Next(1, N + 1);
+                    permcode[i] = code[i];
                     RNGcode += code[i].ToString();//add each number to a string
                     outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
                     RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
@@ -139,15 +165,13 @@ namespace MasterMind_Game
         //takes user guesses at each position
         public void readInput()
         {
-            queue q = new queue();
-            int count;
-            q.first = 0;
             string input;//string for the user input
             int inputValue;//int for the input after parsing input
             bool success;//see if the input is can integer
             bool valid;//limits to the input
             Console.WriteLine("Colour Guide: \n1 = Red\n2 = Blue\n3 = Green\n4 = Yellow\n5 = Orange\n6 = Purple\n7 = Pink\n8 = Turqoise");
             inputValues = new int[M];//int array of all the input values size of M
+            permInput = new int[M];
             for (int i = 0; i < M; i++)
             {
                 Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 8) ");//asks for input at position i, i+1, ...
@@ -163,10 +187,7 @@ namespace MasterMind_Game
                     valid = success && 1 <= inputValue && inputValue <= 8;
                 }
                 inputValues[i] += inputValue;//add each value to an array
-                for(i = 0; i < M; i++)
-                {
-                    add(q, i);
-                }
+                permInput[i] = inputValues[i];
             }
         }
 
@@ -179,48 +200,54 @@ namespace MasterMind_Game
             black = 0;//set black, white and grey variables to 0 before checking input
             white = 0;
             grey = 0;
-            colourHits = new bool[colours]; //make a new bool array the size of the input to see if the user inputted the correct values
             string userCode = string.Empty;//string to hold the user's guess
             string userColours = string.Empty;//string to convert code into colours
+            Queue<string> q = new Queue<string>();
             for (int i = 0; i < M; i++)//length of M do this
             {
                 outputColours[i] = Colours[inputValues[i] - 1];//find the colour
                 userColours += outputColours[i].ToString() + ", ";// add colour to string
                 userCode += inputValues[i].ToString();//add each number to string
+                q.add(inputValues[i].ToString());
+            }
+            while (!q.isEmpty())
+            {
+                Console.Write(q.takeaway() + ", "); //Say Hello World
             }
             userHistory += userCode + ", ";
             Console.WriteLine($"History of your guesses: {userHistory}");
             Console.WriteLine($"Your guess: {userCode}");//output both to console
             Console.WriteLine($"Guess Colours: {userColours}\n");
             numofGuesses--;//deduct 1 fom number of guesses
-            for (int i = 0; i < colours; i++)//check each digit
-            {
 
-                colourHits[i] = false;
-            }
+            bool colourTrue = false; //make a new bool to see if the user inputted the correct values
 
             for(int i = 0; i < M; i++)
             { 
                 if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
                 {
-                    colourHits[code[i]] = true;
+                    colourTrue = true;
                     black++;
                 }
             }
 
-            for(int i = 0; i < M; i++)//it'll check the next one across if its not in the current position to increase white, white is for correct input but wrong position
+            for (int i = 0; i < M; i++)//it'll check the next one across if its not in the current position to increase white, white is for correct input but wrong position
             {
-                if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
+                if (colourTrue == false)
                 {
-                    continue;
-                }
-                for (int j = 0; j < M; j++)
-                {
-                    if (inputValues[i] == code[j])
+                    for (int j = 0; j < M; j++)
                     {
-                        white++;
+                        if (inputValues[j] == code[i])
+                        {
+                            white++;
+                            code[i] = -1;
+                            inputValues[j] = -2;
+                        }
+                     
                     }
                 }
+                inputValues[i] = permInput[i];
+                code[i] = permcode[i];
             }
             grey = M - black - white; //whatever is left from the black and white from the total is the grey, incorrect input and position
             if (black == M)//if they get it all right they won
@@ -315,23 +342,23 @@ namespace MasterMind_Game
         {
             Mastermind game = new Mastermind();//Create a new Mastermind class
             game.Start();//calls the start procedure
-            while (game.gameStart == true)//when the game is running
+            while (game.gameStart)//when the game is running
             {
                 Console.WriteLine("Hello and Welcome to my Mastermind Code Breaker!");
 
                 Console.WriteLine(Environment.NewLine);
 
-                while (game.gameOver == false)
+                while (game.gameOver == false)//when they haven't won do this
                 {
-                    if (game.Ninput == true)
+                    if (game.Ninput)//for when they're inputting the rules
                     {
                         game.NInput();
                     }
-                    game.readInput();
+                    game.readInput();//takes guess input
                     Console.WriteLine(Environment.NewLine);
-                    game.guessInput();
+                    game.guessInput();//outcome
                 }
-                game.Replay();
+                game.Replay();//replay function
             }
             
         }
