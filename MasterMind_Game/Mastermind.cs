@@ -290,6 +290,7 @@ namespace MasterMind_Game
                 Console.ResetColor();
                 addHistory();
                 Console.WriteLine($"Number of Guesses Left: {numofGuessesLeft} \n");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine($"Black: {black}");
                 Console.WriteLine($"White: {white}");
                 Console.WriteLine($"Grey: {grey}");
@@ -397,6 +398,7 @@ namespace MasterMind_Game
                 Console.WriteLine("Thank you for playing the game!");
                 Console.Write(" Please press any key to exit the game... ");//it will exit the game after a key is pressed
                 Console.ReadKey(gameStart = false);
+                Environment.Exit(0);
             }
             else//else it is an invalid answer
             {
@@ -408,6 +410,7 @@ namespace MasterMind_Game
 
         public void Start()//start procedure
         {
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(" _________    _______    ______    _______    _____    _______    __________   ___    ___     _    ______");
             Console.WriteLine("|  _   _  |  |   _   |  |  ____|  |__   __|  |  ___|  |  __   |  |  _   _  |  |___|  |   \\   | |  | ___  \\ ");
