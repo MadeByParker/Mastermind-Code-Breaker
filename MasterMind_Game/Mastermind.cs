@@ -27,7 +27,7 @@ namespace MasterMind_Game
 
         //bool to state if the game is finished or not
         bool gameOver = false;// to see if the user has beat the game
-        bool Ninput = true; //to see if the user has inputted the rules set for the game
+        bool Ninput = false; //to see if the user has inputted the rules set for the game
         bool gameStart = false; //to see if the game has started
         
         //integer to turn the current input into a integer from a console.readline()
@@ -105,7 +105,7 @@ namespace MasterMind_Game
                 if (RulesSet == false)
                 {
                     //ask for amount of guesses the user wants to have
-                    Console.Write("\nPlease enter the number of guesses you want (Number between 1 and 20): ");
+                    Console.Write("Please enter the number of guesses you want (Number between 1 and 20): ");
                     string input = Console.ReadLine(); //read user input
                     int inputValue; //integer for the input from parsing the input of string
                     bool success = int.TryParse(input, out inputValue); //bool to see if the input can be converted into an integer
@@ -161,8 +161,8 @@ namespace MasterMind_Game
 
                 code = new int[M]; //initialise an int array called code, size of M
                 permcode = new int[M];//initialise permcode with size of M
-                userCode = new string[M];//initialise userCode with size of M
-                userColours = new string[M];//initialise userColours with size of M
+                userCode = new string[numofGuesses];//initialise userCode with size of M
+                userColours = new string[numofGuesses];//initialise userColours with size of M
 
                 string RNGcode = string.Empty; // string of the rng code
                 string RNGcolours = string.Empty; // string of the colours, corresponding to the numbers
@@ -174,6 +174,7 @@ namespace MasterMind_Game
                     code[i] += rng.Next(1, N + 1);
                 }
                 permcode = code;
+                
                 Console.Write("\nPlease press the enter key to continue the game... or press B to go back ");//it will exit the game after a key is pressed
                 ConsoleKeyInfo key = Console.ReadKey();
                 if (key.Key == ConsoleKey.Enter)
@@ -183,14 +184,15 @@ namespace MasterMind_Game
                 }
                 else if (key.Key == ConsoleKey.B)
                 {
+                    Console.Clear();
+                    Console.WriteLine(Environment.NewLine);
                     RulesSet = false;
                     NInput();
-                    Console.Clear();
                 }
                 else//else it is an invalid answer
                 {
                     RulesSet = true;
-                    Console.WriteLine("\nInvalid answer, Try again...");
+                    Console.WriteLine("\nInvalid input, Try again...");
                 }
             }
         }
@@ -208,7 +210,7 @@ namespace MasterMind_Game
             Console.WriteLine(" 1 = Red, ");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(" 2 = Blue,");
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine(" 3 = Green, ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(" 4 = Yellow, ");
@@ -228,7 +230,7 @@ namespace MasterMind_Game
 
             for (int i = 0; i < M; i++)
             {
-                Console.WriteLine($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 9) ");//asks for input at position i, i+1, ...
+                Console.Write($"Please enter your guess of the secret code at position: [{i + 1}] (Number between 1 and 9) ");//asks for input at position i, i+1, ...
                 input = Console.ReadLine();//reads input
                 success = int.TryParse(input, out inputValue);//try parsing the input to see if its an integer
                 valid = success && 1 <= inputValue && inputValue <= colours; //define limits to the input
@@ -252,6 +254,7 @@ namespace MasterMind_Game
             black = 0;//set black, white and grey variables to 0 before checking input
             white = 0;
             grey = 0;
+            int colourID = 0;
             numofGuessesLeft--;//deduct 1 fom number of guesses
 
             bool colourTrue = false; //make a new bool to see if the user inputted the correct values
@@ -274,15 +277,10 @@ namespace MasterMind_Game
                         if (inputValues[j] == code[i])
                         {
                             white++;
-                            //this is to stop duplicates
-                            code[i] = -1;
-                            inputValues[j] = -2;
                         }
                     }
                 }
             }
-
-            //make sure its back to the original code
             grey = M - black - white; //whatever is left from the black and white from the total is the grey, incorrect input and position
 
             if (black == M)//if they get it all right they won
@@ -323,12 +321,11 @@ namespace MasterMind_Game
                 for (int i = 0; i < M; i++) //for up to length M,
                 {
                     //generate a number between 1 and N, N+1 being the limit
+                    colourID = inputValues[i];
                     RNGcode += code[i].ToString();//add each number to a string
-                    outputColours[i] = Colours[code[i] - 1]; //add corresponding colour
-                    RNGcolours += outputColours[i].ToString() + ", ";// put each colour to a string
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"The code was: {RNGcode} - {RNGcolours}");
+                Console.WriteLine($"The code was: {RNGcode}");
 
                 gameOver = true;
             }
@@ -367,6 +364,20 @@ namespace MasterMind_Game
                     Console.WriteLine($"Guess {guessID.takeaway()}: " + CodeQ.takeaway() + " - " + ColoursQ.takeaway());
                 }
             }
+            if(counter > 10)
+            {
+                Console.WriteLine("Want to Quit? Press Q to exit the game");
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.Key == ConsoleKey.Q)
+                {
+                    numofGuessesLeft = 0;//end this function
+                    Console.Clear();
+                }
+                else//else it is an invalid answer
+                {
+                    Console.WriteLine("Keep Trying!");
+                }
+            }
         }
 
         public void Replay()//replay function
@@ -383,20 +394,29 @@ namespace MasterMind_Game
             }
             else if (input == "no")//if the answer is no
             {
-                Console.WriteLine("Thank you for playing the game!\n");
-                Console.Write("Please press any key to exit the game... ");//it will exit the game after a key is pressed
+                Console.WriteLine("Thank you for playing the game!");
+                Console.Write(" Please press any key to exit the game... ");//it will exit the game after a key is pressed
                 Console.ReadKey(gameStart = false);
             }
             else//else it is an invalid answer
             {
                 gameStart = false;
-                Console.WriteLine("Invalid answer, Try again...");
+                Console.WriteLine("Invalid input, Try again...");
                 Replay();
             }
         }
 
         public void Start()//start procedure
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(" _________    _______    ______    _______    _____    _______    __________   ___    ___     _    ______");
+            Console.WriteLine("|  _   _  |  |   _   |  |  ____|  |__   __|  |  ___|  |  __   |  |  _   _  |  |___|  |   \\   | |  | ___  \\ ");
+            Console.WriteLine("| | | | | |  |  |_|  |  | |____      | |     | |___   | |__|  |  | | | | | |   ___   |  _ \\  | |  | |  |  \\");
+            Console.WriteLine("| | | | | |  |  ___  |  |____  |     | |     |  ___|  |  _   _|  | | | | | |  |   |  | | \\ \\_| |  | |  |   |");
+            Console.WriteLine("| | | | | |  | |   | |   ____| |     | |     | |___   | | \\ \\    | | | | | |  |   |  | |  \\    |  | |__|  /");
+            Console.WriteLine("|_| |_| |_|  |_|   |_|  |______|     |_|     |_____|  |_|  \\_\\   |_| |_| |_|  |___|  |_|   \\___|  |______/");
+            Console.ResetColor();
+            Console.WriteLine(Environment.NewLine);
             Console.WriteLine("Type 'play' to start the game");//it'l'l ask the user to type 'play' to start the game
             string input = Console.ReadLine();//converts input to lower case after reading it
             if (input == "play")//if the user has typed 'play' then it'll start the game
@@ -406,8 +426,35 @@ namespace MasterMind_Game
             else//else it'll say it was an invalid input and recall the function
             {
                 gameStart = false;
-                Console.WriteLine("Invalid answer, Try again...");
+                Console.WriteLine("Invalid input, Try again...");
                 Start();
+            }
+        }
+
+        public void Rules()
+        {
+            Console.WriteLine("\nRules of Mastermind:");
+            Console.WriteLine("\nPick the amount of guesses you want, \nthe amount of numbers that the computer can pick from and \nHhow many positions there are in the code");
+            Console.WriteLine("\nYou guess what the code is at each position");
+            Console.WriteLine("\nYou will get feedback depending on how good your guess is:");
+            Console.WriteLine("Black: Correct Number and Position, White: Correct Number but Wrong Position, Grey: Wrong Number and Position");
+            Console.WriteLine("\nIF you run out of guesses, you automatically lose!");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nGood Luck!");
+            Console.ResetColor();
+
+            Console.Write("\nPlease press the enter key to continue the game... ");//it will continue the game after a key is pressed
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.Key == ConsoleKey.Enter)
+            {
+                Ninput = true;//end this function
+                Console.Clear();
+            }
+            else//else it is an invalid answer
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid key, Try again... ");
+                Rules();
             }
         }
         static void Main()//Main function
@@ -417,8 +464,8 @@ namespace MasterMind_Game
             game.Start();//calls the start procedure
             while (game.gameStart)//when the game is running
             {
-                Console.WriteLine("Hello and Welcome to my Mastermind Code Breaker!");
-
+                Console.WriteLine("\nHello and Welcome to my Mastermind Code Breaker!");
+                game.Rules();
                 while (game.gameOver == false)//when they haven't won do this
                 {
                     if (game.Ninput)//for when they're inputting the rules
