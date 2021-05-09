@@ -200,7 +200,7 @@ namespace MasterMind_Game
             bool success;//see if the input is can integer
             bool valid;//limits to the input
 
-            Console.WriteLine("Colour Guide:\n");
+            Console.WriteLine("\nColour Guide:\n");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(" 1 = Red, ");
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -319,6 +319,7 @@ namespace MasterMind_Game
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You Lost!");
                 Console.ResetColor();
+                addHistory();
                 string RNGcode = string.Empty; // string of the rng code
                 string RNGcolours = string.Empty; // string of the colours, corresponding to the numbers
                 outputColours = new string[M]; //array to output the right colours
@@ -398,6 +399,7 @@ namespace MasterMind_Game
             }
             else if (input == "no")//if the answer is no
             {
+                Console.ResetColor();
                 Console.WriteLine("Thank you for playing the game!");
                 Console.Write(" Please press any key to exit the game... ");//it will exit the game after a key is pressed
                 Console.ReadKey(gameStart = false);
