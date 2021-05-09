@@ -173,6 +173,13 @@ namespace MasterMind_Game
                     //generate a number between 1 and N, N+1 being the limit
                     code[i] += rng.Next(1, N + 1);
                 }
+                if(M == 4)
+                {
+                    code[0] = 1;
+                    code[1] = 2;
+                    code[2] = 3;
+                    code[3] = 4;
+                }
                 permcode = code;
                 
                 Console.Write("\nPlease press the enter key to continue the game... or press B to go back ");//it will exit the game after a key is pressed
@@ -244,9 +251,11 @@ namespace MasterMind_Game
                 }
                 inputValues[i] += inputValue;//add each value to an array
                 permInput[i] = inputValues[i];
+
             }
         }
 
+        
         //processes the input and checks the user code 1 by 1
         public void guessInput()
         {
@@ -257,31 +266,39 @@ namespace MasterMind_Game
             int colourID = 0;
             numofGuessesLeft--;//deduct 1 fom number of guesses
 
-            bool colourTrue = false; //make a new bool to see if the user inputted the correct values
+            int[] flags = new int[M];//array to check if position has been already checked
 
-            for(int i = 0; i < M; i++)
-            { 
-                if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position
+            for(int count = 0; count < M; count++)//set each value of flags to -1 initially
+            {
+                flags[count] = -1;
+            }
+
+            for (int i = 0; i < M; i++)
+            {
+                if (inputValues[i] == code[i])//if input equals to the code, say they got it right and increase black, black is for correct input and position and set flags[i] to 1 (true)
                 {
-                    colourTrue = true;
                     black++;
+                    flags[i] = 1;
                 }
             }
 
-            for (int i = 0; i < M; i++)//it'll check the next one across if its not in the current position to increase white, white is for correct input but wrong position
+            for (int x = 0; x < M; x++)//white check
             {
-                if (colourTrue == false)
+                for (int j = 0; j < M; j++)
                 {
-                    for (int j = 0; j < M; j++)
+                    if (x != j && flags[x] != 1)//if position is not current and if it hasn't been true yet
                     {
-                        if (inputValues[j] == code[i])
+                        if (code[x] == inputValues[j])//if it matches then increase whites, white are correct input but wrong position, set flags[x] to 1 (true)
                         {
                             white++;
+                            flags[x] = 1;
+                            break;
                         }
                     }
                 }
             }
-            grey = M - black - white; //whatever is left from the black and white from the total is the grey, incorrect input and position
+            
+            
 
             if (black == M)//if they get it all right they won
             {
@@ -418,7 +435,7 @@ namespace MasterMind_Game
             Console.WriteLine("| | | | | |  |  ___  |  |____  |     | |     |  ___|  |  _   _|  | | | | | |  |   |  | | \\ \\_| |  | |  |   |");
             Console.WriteLine("| | | | | |  | |   | |   ____| |     | |     | |___   | | \\ \\    | | | | | |  |   |  | |  \\    |  | |__|  /");
             Console.WriteLine("|_| |_| |_|  |_|   |_|  |______|     |_|     |_____|  |_|  \\_\\   |_| |_| |_|  |___|  |_|   \\___|  |______/");
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine("Type 'play' to start the game");//it'l'l ask the user to type 'play' to start the game
             string input = Console.ReadLine();//converts input to lower case after reading it
