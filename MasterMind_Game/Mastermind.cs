@@ -37,13 +37,12 @@ namespace MasterMind_Game
         //bool to see if they are happy with the rules they selected
         bool RulesSet = false;
 
-        // this array storex the generated code
+        // this array stores the generated code
         int[] code;
-        int[] permcode;
 
         //the arrays of the inputs
         int[] inputValues;
-        int[] permInput;
+
 
         //strings for outputs
         string[] userCode;//string array to hold the user's guess
@@ -160,7 +159,6 @@ namespace MasterMind_Game
                 Random rng = new Random(); //new random class
 
                 code = new int[M]; //initialise an int array called code, size of M
-                permcode = new int[M];//initialise permcode with size of M
                 userCode = new string[numofGuesses];//initialise userCode with size of M
                 userColours = new string[numofGuesses];//initialise userColours with size of M
 
@@ -173,14 +171,6 @@ namespace MasterMind_Game
                     //generate a number between 1 and N, N+1 being the limit
                     code[i] += rng.Next(1, N + 1);
                 }
-                if(M == 4)
-                {
-                    code[0] = 1;
-                    code[1] = 2;
-                    code[2] = 3;
-                    code[3] = 4;
-                }
-                permcode = code;
                 
                 Console.Write("\nPlease press the enter key to continue the game... or press B to go back ");//it will exit the game after a key is pressed
                 ConsoleKeyInfo key = Console.ReadKey();
@@ -233,7 +223,6 @@ namespace MasterMind_Game
             Console.WriteLine(" 9 = Lime.\n");
             Console.ResetColor();
             inputValues = new int[M];//int array of all the input values size of M
-            permInput = new int[M];//this is the permanent storage of each guess which should be size of the code length
 
             for (int i = 0; i < M; i++)
             {
@@ -250,7 +239,6 @@ namespace MasterMind_Game
                     valid = success && 1 <= inputValue && inputValue <= colours;
                 }
                 inputValues[i] += inputValue;//add each value to an array
-                permInput[i] = inputValues[i];
 
             }
         }
@@ -297,8 +285,6 @@ namespace MasterMind_Game
                     }
                 }
             }
-            
-            
 
             if (black == M)//if they get it all right they won
             {
