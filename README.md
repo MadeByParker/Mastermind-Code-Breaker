@@ -5,9 +5,11 @@
 ## Technologies used: 💻
 
 * Core C#, no libraries.  
-* Console App.
+* Console App (.NET Framework).
+* Queues for history.
 
-Done it without using .length, Lists, foreach loops, ONLY arrays, for loops and if statements.
+Done it without using Array.length/Array.Resize, Lists, foreach loops. 
+ONLY arrays, queues, while and for loops and if statements used.
 
 ## How to Play: 🎮
 
@@ -29,9 +31,6 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 * If you got them all right then it'll say `You Won!, Do you want to play again?` then you can type yes to continue or no to exit the game.
 * Else you will keep playing until you got no more guesses left or you guessed the code correctly.
 
-## Future
-
-Will add a queue!
 
 ## Screenshots: 🖼
 
@@ -41,7 +40,7 @@ Will add a queue!
 
 ### Ready to Play
 
-![Play](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/play.PNG)
+![Play](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/welcome.PNG)
 
 ### Inputting the rules
 
@@ -51,9 +50,9 @@ Will add a queue!
 
 ![Guessing](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/guesses.PNG)
 
-### Invalid inputs 
+### The rules! 
 
-![Invalid](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/invalid.PNG)
+![Rules](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/rules.PNG)
 
 ### Winning 
 
@@ -62,6 +61,10 @@ Will add a queue!
 ### Losing 
 
 ![Lost](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/lost.PNG)
+
+### Replay
+
+![Lost](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/replay.PNG)
 
 ### Exiting the Game
 
