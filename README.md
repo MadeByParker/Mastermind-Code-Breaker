@@ -64,7 +64,7 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 
 ### Replay
 
-![Lost](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/replay.PNG)
+![Replay](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/replay.PNG)
 
 ### Exiting the Game
 
