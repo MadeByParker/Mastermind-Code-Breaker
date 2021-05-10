@@ -42,17 +42,17 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 
 ![Play](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/welcome.PNG)
 
-### Inputting the rules
+### The game rules! 
+
+![Rules](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/rules.PNG)
+
+### Inputting custom rules
 
 ![Rules](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/inputs.PNG)
 
 ### Guessing the code
 
 ![Guessing](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/guesses.PNG)
-
-### The rules! 
-
-![Rules](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/rules.PNG)
 
 ### Winning 
 
@@ -69,7 +69,3 @@ Or in the command line or powershell type `cd the directory you downloaded it to
 ### Exiting the Game
 
 ![Exit](https://github.com/Parker06/Mastermind-Code-Breaker/blob/main/exit.PNG)
-
-
-
-
