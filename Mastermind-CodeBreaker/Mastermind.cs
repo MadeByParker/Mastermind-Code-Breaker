@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 
 namespace MasterMind_Game
 {
@@ -35,51 +34,6 @@ namespace MasterMind_Game
 
         public static string[] userCode; //string array to hold the user's guess
         public static string[] userColours; //string array for the colours of user's guess
-
-        class Queue<Item>//queue class
-        {
-            private Node Head = null;//first item
-            private Node End = null;//last item
-            public int Size;//size of queue
-
-            public void add(Item itemtoAdd)//add item to queue
-            {
-                if (isEmpty())//if it is empty then make a new item and then make it the latest item and increase the size by 1
-                {
-                    Head = new Node(itemtoAdd);
-                    End = Head;
-                    Size++;
-                    return;
-                }
-                Node temp = new Node(itemtoAdd); //this is the same process when its empty but its just adds a new item on the queue
-                End.Next = temp;
-                End = temp;
-                Size++;
-            }
-
-            public Item takeaway()//take the top item away
-            {
-                Item temp = Head.Item;
-                Head = Head.Next;
-                Size--;
-                return temp;
-            }
-
-            public bool isEmpty()//proves if the first item is empty
-            {
-                return Head == null;
-            }
-
-            private class Node//this is a item of the queue
-            {
-                public Item Item;
-                public Node Next = null;
-                public Node(Item item)
-                {
-                    Item = item;
-                }
-            }
-        }
 
         public void RulesInput()//input how many colours are there available and how long the code is
         {
@@ -178,6 +132,8 @@ namespace MasterMind_Game
             }
         }
 
+
+
         public void readInput() //takes user guesses at each position
         {
             string input;//string for the user input
@@ -230,10 +186,10 @@ namespace MasterMind_Game
         public void guessInput()
         {
             Console.Clear();//clears the console
-            black = 0;//set black, white and grey variables to 0 before checking input
+            black = 0;//set black and white to 0 before checking input
             white = 0;
-            int colourID = 0;
             numofGuessesLeft--;//deduct 1 fom number of guesses
+            int colourID; 
 
             int[] flags = new int[M];//array to check if position has been already checked
 
@@ -319,37 +275,83 @@ namespace MasterMind_Game
             }
         }
 
+        class queue
+        {
+            public int last; //latest item
+            public int[] history = new int[M]; //The array is dynamic as its the size of M
+        }
+
+        static void addItem(queue q, int i)
+        {
+            if (q.last == numofGuesses - 1)
+            {
+                Console.WriteLine("Error in Output!");
+            }
+            else
+            {
+                q.last = q.last + 1;
+                q.history[q.last] = i;
+            }
+        }
+
+        static int takeAway(queue q)
+        {
+            if(q.last < 0)
+            {
+                Console.WriteLine("Error in dequeuing");
+                return -1;
+            }
+            else
+            {
+                int temp = q.history[0];
+
+                //shuffle the remaining data up one
+                for(int i = 0; i < q.last; i++)
+                {
+                    q.history[i] = q.history[i + 1];
+                }
+                q.last = q.last - 1;
+                return temp;
+            }
+        }
+
         //add History of Guesses by queues
-        public void addHistory()
+        public static void addHistory()
         {
             if (counter < numofGuesses)//when the game is running
             {
                 int colourID = 0;
                 string userColour = string.Empty;//string to convert code into colours
                 string userGuess = string.Empty;//string to convert current user guess into one string
-                Queue<int> guessID = new Queue<int>();//queue for guess ID
-                Queue<string> CodeQ = new Queue<string>();//queue for user guess
-                Queue<string> ColoursQ = new Queue<string>();//queue for colours equivalent to number
+                queue guessID = new queue();//queue for guess ID
+                queue CodeQ = new queue();//queue for user guess
+                queue ColoursQ = new queue();//queue for colours equivalent to number
+
+                int guess;
+
+                CodeQ.last = -1;
+                guessID.last = -1;
+
                 for (int i = 0; i < M; i++)//for up to the code length convert all guesses to a string e.g 1,2,3,4 becomes 1234
                 {
                     colourID = inputValues[i];
                     outputColours[i] = Colours[colourID - 1];//find the colour
-                    userColour += outputColours[i].ToString() + ", ";// add colour to string
                     userGuess += inputValues[i].ToString();
                 }
                 userCode[counter] += userGuess;//add each string to the array based on how many goes there have been - evaluated by counter
-                userColours[counter] += userColour;//add colour equivalent
+                userColours[counter] = userColour;//add colour equivalent
                 counter++;
                 for (int i = 0; i < counter; i++)//for amount of guesses completed
                 {
-                    CodeQ.add(userCode[i]);//add each guess to the queue
-                    ColoursQ.add(userColours[i]);//add each colur equivalent of code to queue
-                    guessID.add(i + 1);//add guess ID to queue
+                    guess = Convert.ToInt32(userCode[i]);
+
+                    addItem(CodeQ, guess);//add each guess to the queue
+                    addItem(guessID, i + 1);//add guess ID to queue
                 }
                 Console.WriteLine("History of Guesses:\n");
-                while (!CodeQ.isEmpty() && !ColoursQ.isEmpty())//when its not empty dequeue it 1 by 1 so its prints out current guesses on a game
+                for (int i = 0; i < counter; i++)//when its not empty dequeue it 1 by 1 so its prints out current guesses on a game
                 {
-                    Console.WriteLine($"Guess {guessID.takeaway()}: " + CodeQ.takeaway() + " - " + ColoursQ.takeaway());
+                    Console.WriteLine($"Guess {takeAway(guessID)}: " + takeAway(CodeQ));
                 }
             }
             if (counter > 10)
