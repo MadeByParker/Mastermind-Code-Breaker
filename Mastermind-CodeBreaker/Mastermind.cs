@@ -35,6 +35,27 @@ namespace MasterMind_Game
         public static string[] userCode; //string array to hold the user's guess
         public static string[] userColours; //string array for the colours of user's guess
 
+        public void resetRules()
+        {
+            colours = 9; //max amount of colours
+
+            numofGuessesLeft = 0; //number of guesses that the player has to guess the code
+
+            counter = 0;
+            numofGuesses = 0; //to track amount of guesses completed
+
+            black = 0; //correct colour and position
+            white = 0; //incorrect colour and position
+
+            gameOver = false; // to see if the user has beat the game
+            RulesSelected = false; //to see if the user has inputted the rules set for the game
+            gameStart = false; //to see if the game has started
+            RulesSet = false; //bool to see if they are happy with the rules they selected
+
+            N = 0; //amount of options to choose from e.g 4 being easiest to guess whereas 9 has 9 options, so 1/9 to be correct
+            M = 0; //how long the user wants the code to be, 4 being easy, 8 being hard
+    }
+
         public void RulesInput()//input how many colours are there available and how long the code is
         {
             //while this is true
@@ -378,6 +399,7 @@ namespace MasterMind_Game
             if (input == "yes")//if it is yes then it'll reset the game and clear the console
             {
                 Console.Clear();
+                resetRules();
                 Main();
                 Console.ResetColor();
 
