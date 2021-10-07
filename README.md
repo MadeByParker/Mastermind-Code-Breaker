@@ -1,5 +1,7 @@
 # Mastermind Code Breaker 🔢
 
+## This was for my COMP1003 University Module tackling Data Structures
+
 ### This is a mastermind code breaker guessing game!
 
 ## Technologies used: 💻
