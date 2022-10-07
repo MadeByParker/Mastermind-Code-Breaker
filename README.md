@@ -2,6 +2,8 @@
 
 ## This was for my COMP1003 University Module tackling Data Structures
 
+Results: 72/100
+
 ### This is a mastermind code breaker guessing game!
 
 ## Technologies used: 💻
